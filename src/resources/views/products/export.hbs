@@ -1,0 +1,28 @@
+<div class="mt-4">
+    <h3>Số lượng sản phẩm đã xuất</h3>
+
+    <form class="mt-4" method="POST" action="/products/{{product._id}}/export?_method=PUT">
+        {{!-- <div class=" form-group">
+            <img class="card-img-top" src="{{product.image}}" alt="{{product.name}}">
+        </div> --}}
+        <div class=" form-group">
+            <label for="name">Tên sản phẩm</label>
+            <input type="text" class="form-control" value="{{product.name}}" id="name" name="name" readonly>
+        </div>
+        <div class="form-group">
+            <label for="count">Số lượng hiện có</label>
+            <input type="number" class="form-control" value="{{product.count}}" id="count" name="count" readonly>
+        </div>
+        <div class="form-group">
+            <label for="countExportTotal">Tổng số lượng đã xuất</label>
+            <input type="number" class="form-control" value="{{product.countExportTotal}}" id="countExportTotal"
+                name="countExportTotal" readonly>
+        </div>
+        <div class="form-group">
+            <label for="countExport">Số lượng đã xuất</label>
+            <input type="number" class="form-control" id="countExport" name="countExport" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu lại</button>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+@import "variables";
+
+.card-products-item {
+    margin-top: 16px;
+}
+
+.user-avatar {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.checkbox-selected-all-options {
+    width: 235px;
+    margin: 0 16px;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.home-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.home-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

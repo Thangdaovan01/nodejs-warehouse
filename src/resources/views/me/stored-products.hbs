@@ -1,0 +1,156 @@
+<form class="mt-4" name="container-form" method="POST" action="/products/handle-form-action">
+    <div>
+        <h3>Kho hàng của tôi</h3>
+        <a href="/me/trash/products">Thùng rác ({{deletedCount}})</a>
+
+        <div class="mt-4 mb-4 d-flex align-items-center">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="checkbox-all">
+                <label class="custom-control-label" for="checkbox-all">Chọn tất cả</label>
+            </div>
+
+            <select class="form-control checkbox-selected-all-options" name="action" required>
+                <option value="">--Chọn hành động--</option>
+                <option value="deleted">Xóa</option>
+                {{!-- <option value="sort-by-count">Sắp xếp theo số lượng tồn kho</option>
+                <option value="sort-by-export-count-total">Sắp xếp theo số lượng đã xuất</option> --}}
+
+            </select>
+            <button class="btn btn-primary btn-sm disabled check-all-submit-btn">Thực hiện</button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" colspan="2">#</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Giá thành</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Số lượng đã xuất</th>
+
+                {{!-- <th scope="col" colspan="2">Hạn sử dụng</th> --}}
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="productIds[]" value="{{this._id}}">
+                    </div>
+                </td>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.price}} VND</td>
+                <td>{{this.count}}</td>
+                <td>{{this.countExportTotal}}</td>
+                <td>
+                    <a href="/products/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+                    <a href="/products/{{this._id}}/import" class="btn btn-link">Nhập</a>
+                    <a href="/products/{{this._id}}/export" class="btn btn-link">Xuất</a>
+                    <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}"
+                        data-target="#deleteProductModel">Xóa</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="5" class="text-center">
+                    Bạn chưa có sản phẩm nào
+                    <a href="/products/create">Thêm sản phẩm</a>
+                </td>
+            </tr>
+            {{/each}}
+
+        </tbody>
+    </table>
+
+</form>
+
+{{!-- Confirm delete product --}}
+<div class="modal fade" id="deleteProductModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa sản phẩm?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa sản phẩm này??
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-delete-product" class="btn btn-danger">Xóa bỏ</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{!-- Delete form --}}
+{{!-- Submit path để xóa --}}
+<form name="deleteProductForm" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var productId;
+        var deleteForm = document.forms['deleteProductForm'];
+        var btnDeleteProduct = document.getElementById('btn-delete-product');
+        var checkboxAll = $('#checkbox-all');
+        var productItemCheckbox = $('input[name="productIds[]"]');
+        var checkAllSubmitBtn = $('.check-all-submit-btn');
+        var containerForm = document.forms['container-form'];
+
+        //when dialog confirm click
+        $('#deleteProductModel').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            productId = button.data('id');
+        })
+
+        //Lắng nghe sự kiện delete khi click vào
+        btnDeleteProduct.onclick = function () {
+            deleteForm.action = '/products/' + productId + '?_method=DELETE';
+            deleteForm.submit();
+        }
+
+        //console.log(checkboxAll);
+        //checkboxAll click
+        checkboxAll.change(function () {
+            var isCheckedAll = $(this).prop('checked');
+            if (isCheckedAll) productItemCheckbox.prop('checked', true);
+            else productItemCheckbox.prop('checked', false);
+            renderCheckAllSubmitBtn();
+        })
+
+        //productItemCheckbox change --> checkboxAll is not true
+        productItemCheckbox.change(function () {
+            var isCheckedAll = productItemCheckbox.length === $('input[name="productIds[]"]:checked').length;
+            checkboxAll.prop('checked', isCheckedAll);
+            renderCheckAllSubmitBtn();
+        })
+
+        //Khi ko click thi disabled va nguoc lai
+        function renderCheckAllSubmitBtn() {
+            var checkedCount = $('input[name="productIds[]"]:checked').length;
+            if (checkedCount > 0) checkAllSubmitBtn.removeClass('disabled');
+            else checkAllSubmitBtn.addClass('disabled');
+        }
+
+        //khi disabled thi ko dc submit
+        checkAllSubmitBtn.click(function (e) {
+            e.preventDefault();
+            var isSubmitable = !$(this).hasClass('disabled');
+            if (isSubmitable) containerForm.submit();
+
+        })
+
+        checkAllSubmitBtn.on('submit', function (e) {
+            var isSubmitable = !$(this).hasClass('disabled');
+            if (!isSubmitable) e.preventDefault();
+        })
+
+    })
+
+</script>

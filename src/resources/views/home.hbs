@@ -1,0 +1,50 @@
+<div class="mt-4">
+    <select class="form-control checkbox-selected-all-options" name="action" required>
+        <option value="">--Chọn hành động--</option>
+        <option value="sort-by-count">Sắp xếp theo số lượng tồn kho</option>
+        <option value="sort-by-export-count-total">Sắp xếp theo số lượng đã xuất</option>
+    </select>
+    <div class="row">
+
+        {{#each products}}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card card-products-item">
+                <a href="/products/{{this.slug}}">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+                </a>
+                <div class="card-body">
+                    <a href="/products/{{this.slug}}">
+                        <h5 class="card-title home-title">{{this.name}}</h5>
+                    </a>
+                    <h5>{{this.price}} VND</h5>
+                    <p class="card-text home-description">{{this.description}}</p>
+                    <a href="#" class="btn btn-primary">Xem sản phẩm</a>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+        {{! start }}
+
+
+        <!-- Hiển thị phân trang -->
+
+
+        {{!end}}
+
+    </div>
+
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>

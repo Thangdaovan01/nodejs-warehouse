@@ -1,0 +1,42 @@
+<div class="mt-4">
+    <h3>Đăng sản phẩm mới</h3>
+
+    <form method="POST" action="/products/store">
+        <div class="form-group">
+            <label for="name">Tên sản phẩm</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="price">Giá thành</label>
+            <input type="number" class="form-control" id="price" name="price">
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả</label>
+            <input type="text" class="form-control" id="description" name="description">
+        </div>
+        <div class="form-group">
+            <label for="image">Đường link ảnh sản phẩm</label>
+            <input type="text" class="form-control" id="image" name="image">
+        </div>
+        <div class="form-group">
+            <label for="count">Số lượng</label>
+            <input type="number" class="form-control" id="count" name="count">
+        </div>
+        <div class="form-group">
+            <label for="productionDate">Ngày sản xuất</label>
+            <input type="date" class="form-control" id="productionDate" name="productionDate">
+        </div>
+        <div class="form-group">
+            {{!--
+            <script>
+                var today = new Date();
+                var date = (today.getDate() + 7) + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+                console.log(date);
+            </script> --}}
+
+            <label for="expirationDate">Hạn sử dụng</label>
+            <input type="date" class="form-control" id="expirationDate" name="expirationDate" min="">
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+    </form>
+</div>
